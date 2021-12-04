@@ -5,7 +5,9 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +22,8 @@ import lombok.Setter;
 public class Compte {
 	private int Solde;
 	@Id
+	@Size(min=11, max=11)
+	private int num_Compte;
 	private String IBAN;
 	@ManyToMany(mappedBy="comptes")
 	private List<Client> clients;
@@ -27,4 +31,12 @@ public class Compte {
 	private List<Carte> cartes;
 	@OneToMany(mappedBy="compte")
 	private List<Transaction> transactions;
+	@ManyToOne
+	private Agence agence;
+	public Compte(Agence agence) {
+		super();
+		this.agence = agence;
+	}
+	
+	
 }
