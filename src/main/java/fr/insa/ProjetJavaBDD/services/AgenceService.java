@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import fr.insa.ProjetJavaBDD.exceptions.FunctionnalProcessException;
 import fr.insa.ProjetJavaBDD.models.Agence;
 import fr.insa.ProjetJavaBDD.repositories.AgenceRepository;
+import fr.insa.ProjetJavaBDD.ressouces.dto.AgenceCreateModel;
 
 @Service
 public class AgenceService {
@@ -21,4 +22,16 @@ public class AgenceService {
 					.orElseThrow(()-> new FunctionnalProcessException(String.format(AGENCE_NOT_FOUND,Code_agence)));
         return agence;
     } 
+	
+	public Agence saveAgence(AgenceCreateModel agenceToCreate)  throws FunctionnalProcessException
+	{
+		Agence agence = Agence.builder()
+				.Code_agence(agenceToCreate.getCode_agence())
+				.Adresse(agenceToCreate.getAdresse())
+				.build();
+		
+		
+		
+		return this.agenceRepository.save(agence);
+	}
 }

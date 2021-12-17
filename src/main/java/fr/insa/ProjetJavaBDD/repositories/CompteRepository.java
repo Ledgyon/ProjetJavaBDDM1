@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import fr.insa.ProjetJavaBDD.models.Compte;
 
 @Repository
-public interface CompteRepository extends JpaRepository<Compte, String> {
-    public List<Compte> findByIBAN(String IBAN);
+public interface CompteRepository extends JpaRepository<Compte, Integer> {
+    
 }
