@@ -12,6 +12,7 @@ import fr.insa.ProjetJavaBDD.exceptions.FunctionnalProcessException;
 import fr.insa.ProjetJavaBDD.exceptions.ModelNotValidException;
 import fr.insa.ProjetJavaBDD.models.Agence;
 import fr.insa.ProjetJavaBDD.ressouces.dto.AgenceCreateModel;
+import fr.insa.ProjetJavaBDD.ressouces.dto.AgenceReponseModel;
 import fr.insa.ProjetJavaBDD.services.AgenceService;
 
 @RestController
@@ -21,8 +22,13 @@ public class AgenceRessource extends CommonRessource {
 	AgenceService agenceService;
 	
 	@GetMapping("{id}")
-    public Agence getAgence(@PathVariable("id") int id) throws Exception {
-        return agenceService.getAgenceById(id);
+    public AgenceReponseModel getAgence(@PathVariable("id") int id) throws Exception {
+		Agence agence = agenceService.getAgenceById(id);
+		AgenceReponseModel response= AgenceReponseModel.builder()
+			.Code_agence(agence.getCode_agence())
+			.Adresse(agence.getAdresse())
+			.build();
+		return response;
     }
 
     @PostMapping

@@ -1,11 +1,15 @@
 package fr.insa.ProjetJavaBDD.services;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.insa.ProjetJavaBDD.exceptions.FunctionnalProcessException;
 import fr.insa.ProjetJavaBDD.models.Agence;
+import fr.insa.ProjetJavaBDD.models.Client;
 import fr.insa.ProjetJavaBDD.models.Compte;
 import fr.insa.ProjetJavaBDD.repositories.CompteRepository;
 import fr.insa.ProjetJavaBDD.ressouces.dto.CompteCreateModel;
@@ -16,6 +20,7 @@ public class CompteService {
 	private CompteRepository compteRepository;
 	
 	private AgenceService agenceService;
+	private ClientService clientService;
 	
 	private static final String COMPTE_NOT_FOUND="Compte non trouvée avec le num_Compte : %s";
 	
@@ -24,6 +29,7 @@ public class CompteService {
 	public Compte saveCompte(CompteCreateModel compteToCreate)  throws FunctionnalProcessException
 	{
 		Agence agence=agenceService.getAgenceById(compteToCreate.getAgenceCode());
+		List<Client> client=clientService.getAllClientById(compteToCreate.getIDclient());
 		
 		int code_agence = agence.getCode_agence();
 		int num_Compte = compteToCreate.getNum_Compte();
@@ -36,9 +42,8 @@ public class CompteService {
 				.num_Compte(num_Compte)
 				.IBAN(IBAN)
 				.agence(agence)
+				.clients(client)
 				.build();
-		
-		
 		
 		return this.compteRepository.save(compte);
 	}

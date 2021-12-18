@@ -17,7 +17,7 @@ import fr.insa.ProjetJavaBDD.services.CarteService;
 @RestController
 @RequestMapping("cartes")
 public class CarteRessource extends CommonRessource {
-	/*
+	
 	@Autowired
 	CarteService carteService;
 	
@@ -39,17 +39,25 @@ public class CarteRessource extends CommonRessource {
             ex.getMessages().add("AgenceCreateModel : null");
         }
 
-        if(carteToCreate.getCode_agence() == 0 ) {
-            ex.getMessages().add("Code_agence est vide");
+        if(carteToCreate.getPlafond() == 0 ) {
+            ex.getMessages().add("Plafond est vide");
         }
         
-        if(carteToCreate.getAdresse() == null || carteToCreate.getAdresse().isBlank()) {
-            ex.getMessages().add("Adresse est vide");
+        if(carteToCreate.getNumeroCarte() == 0 ) {
+            ex.getMessages().add("NumeroCarte est vide");
+        }
+        
+        if(carteToCreate.getMotDePasse() == null || carteToCreate.getMotDePasse().isBlank()) {
+            ex.getMessages().add("MotDePasse est vide");
+        }
+        
+        if(carteToCreate.getNumCompte() == 0) {
+            ex.getMessages().add("NumCompte est vide");
         }
         
         if(!ex.getMessages().isEmpty()) {
             throw ex;
         }
     }
-    */
+    
 }

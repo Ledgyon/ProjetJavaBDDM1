@@ -11,4 +11,5 @@ public class CarteCreateModel implements Serializable {
 	private int Plafond;
 	private int NumeroCarte;
 	private String MotDePasse;
+	private int NumCompte;
 }

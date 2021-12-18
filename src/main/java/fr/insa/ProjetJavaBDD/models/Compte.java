@@ -25,7 +25,7 @@ public class Compte {
 	private int Solde;
 	@Id
 	@Size(min=11, max=11)
-	private int num_Compte;
+	private long num_Compte;
 	private String IBAN;
 	@ManyToMany(mappedBy="comptes")
 	private List<Client> clients;

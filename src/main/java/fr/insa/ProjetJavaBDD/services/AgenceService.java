@@ -7,6 +7,7 @@ import fr.insa.ProjetJavaBDD.exceptions.FunctionnalProcessException;
 import fr.insa.ProjetJavaBDD.models.Agence;
 import fr.insa.ProjetJavaBDD.repositories.AgenceRepository;
 import fr.insa.ProjetJavaBDD.ressouces.dto.AgenceCreateModel;
+import fr.insa.ProjetJavaBDD.ressouces.dto.AgenceReponseModel;
 
 @Service
 public class AgenceService {
@@ -20,7 +21,8 @@ public class AgenceService {
 		Agence agence=agenceRepository
 					.findById(Code_agence)
 					.orElseThrow(()-> new FunctionnalProcessException(String.format(AGENCE_NOT_FOUND,Code_agence)));
-        return agence;
+		
+		return agence;
     } 
 	
 	public Agence saveAgence(AgenceCreateModel agenceToCreate)  throws FunctionnalProcessException

@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,9 +20,9 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Client {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int ID;
@@ -35,7 +36,6 @@ public class Client {
 	@ManyToMany
 	@JoinTable(name= "client_compte",
 			joinColumns = { @JoinColumn(name="client_id")},
-			inverseJoinColumns = { @JoinColumn(name = "compte_iban")})
-	private List<Compte> comptes;
-		
+			inverseJoinColumns = { @JoinColumn(name = "compte_id")})
+	private List<Compte> comptes;	
 }
