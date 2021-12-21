@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
+//Récupération d'un model de réponse pour l'affichage avec les attributs voulus
 @Getter
 @Setter
 @Builder

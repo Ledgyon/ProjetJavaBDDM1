@@ -1,6 +1,7 @@
 package fr.insa.ProjetJavaBDD.ressouces;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +61,6 @@ public class TransactionRessource extends CommonRessource {
     public ResponseEntity deleteTransaction(@PathVariable("id") int id) {
     	// Appel à la fonction de suppression de l'entité voulu
         transactionService.deleteTransaction(id);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<Void>(HttpStatus.GONE);
     }
 }

@@ -14,7 +14,7 @@ import fr.insa.ProjetJavaBDD.ressouces.dto.AgenceReponseModel;
 @Service
 public class AgenceService {
 	
-	//Init du message d'erreur si l'netité n'existe pas
+	//Init du message d'erreur si l'entité n'existe pas
 	private static final String AGENCE_NOT_FOUND="Agence non trouvée avec le code : %s";
 	
 	//Init de la variable de répertoire, permettant l'appel aux fonctions de cette classe

@@ -1,11 +1,15 @@
 package fr.insa.ProjetJavaBDD.ressouces;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.insa.ProjetJavaBDD.exceptions.FunctionnalProcessException;
 import fr.insa.ProjetJavaBDD.exceptions.ModelNotValidException;
 import fr.insa.ProjetJavaBDD.models.Agence;
+import fr.insa.ProjetJavaBDD.repositories.AgenceRepository;
 import fr.insa.ProjetJavaBDD.ressouces.dto.AgenceCreateModel;
 import fr.insa.ProjetJavaBDD.ressouces.dto.AgenceReponseModel;
 import fr.insa.ProjetJavaBDD.services.AgenceService;
@@ -20,6 +25,10 @@ import fr.insa.ProjetJavaBDD.services.AgenceService;
 @RestController
 @RequestMapping("agences")
 public class AgenceRessource extends CommonRessource {
+	//Init de la variable de répertoire, permettant l'appel aux fonctions de cette classe
+	@Autowired
+	private AgenceRepository agenceRepository;
+	
 	@Autowired
 	AgenceService agenceService; //Init de la variable de service, permettant l'appel aux fonctions de cette classe
 	
@@ -75,12 +84,33 @@ public class AgenceRessource extends CommonRessource {
     }
     
     /*
+     * Fonction de modification de l'adresse d'une agence
+     */
+    @PutMapping("{id}")
+    public ResponseEntity<Agence> updateAgence(@PathVariable(value = "id") Long id,
+      @Valid @RequestBody Agence agenceDetails) throws FunctionnalProcessException {
+    	//Init du message d'erreur si l'entité n'existe pas
+        String AGENCE_NOT_FOUND="Agence non trouvée avec le code : %s";
+        //Stockage de l'entité recherchée ou envoie d'un message d'erreur si n'existe pas
+        Agence agence = agenceRepository
+                .findById(id)
+                .orElseThrow(()-> new FunctionnalProcessException(String.format(AGENCE_NOT_FOUND,id)));
+        
+        //Changement des variables
+         agence.setAdresse(agenceDetails.getAdresse());
+         //Sauvegarde de l'entité avec les changements 
+         final Agence updatedAgence = agenceRepository.save(agence);
+         //return de l'entité avec ses valeurs modifiées
+         return ResponseEntity.ok(updatedAgence);
+    }
+    
+    /*
      * Fonction de suppression d'une agence grâce à son id
      */
     @DeleteMapping("{id}")
     public ResponseEntity deleteAgence(@PathVariable("id") long id) {
     	// Appel à la fonction de suppression de l'entité voulu
         agenceService.deleteAgence(id);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<Void>(HttpStatus.GONE);
     }
 }

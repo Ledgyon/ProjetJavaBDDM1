@@ -24,27 +24,22 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Compte {
-	private int solde;
+	private int solde; // Argent actuellement disponible sur un compte
 	@Id
 	@Size(min=11, max=11)
-	private long numCompte;
-	private String iban;
+	private long numCompte; // ID d'un compte sur 11 valeurs
+	private String iban; // IBAN du compte
 	@JsonIgnore
 	@ManyToMany(mappedBy="comptes")
-	private List<Client> clients;
+	private List<Client> clients; // Liste des Clients Propriétaires
 	@JsonIgnore
 	@OneToMany(mappedBy="compte")
-	private List<Carte> cartes;
+	private List<Carte> cartes; // Liste de Cartes rattachée au compte
 	@JsonIgnore
 	@OneToMany(mappedBy="compte")
-	private List<Transaction> transactions;
+	private List<Transaction> transactions; // Liste des Transactions faite à partir du compte
 	@JsonIgnore
 	@ManyToOne
-	private Agence agence;
-	public Compte(Agence agence) {
-		super();
-		this.agence = agence;
-	}
-	
+	private Agence agence; // Référence à l'agence du compte
 	
 }

@@ -1,24 +1,33 @@
 package fr.insa.ProjetJavaBDD.ressouces;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.insa.ProjetJavaBDD.exceptions.FunctionnalProcessException;
 import fr.insa.ProjetJavaBDD.exceptions.ModelNotValidException;
+import fr.insa.ProjetJavaBDD.models.Agence;
 import fr.insa.ProjetJavaBDD.models.Carte;
+import fr.insa.ProjetJavaBDD.repositories.CarteRepository;
 import fr.insa.ProjetJavaBDD.ressouces.dto.CarteCreateModel;
 import fr.insa.ProjetJavaBDD.services.CarteService;
 
 @RestController
 @RequestMapping("cartes")
 public class CarteRessource extends CommonRessource {
+	//Init de la variable de répertoire, permettant l'appel aux fonctions de cette classe
+	@Autowired
+	private CarteRepository carteRepository;
 	
 	@Autowired
 	CarteService carteService; //Init de la variable de service, permettant l'appel aux fonctions de cette classe
@@ -76,13 +85,34 @@ public class CarteRessource extends CommonRessource {
     }
     
     /*
+     * Fonction de modification du plafond d'une carte
+     */
+    @PutMapping("{id}")
+    public ResponseEntity<Carte> updateCarte(@PathVariable(value = "id") Long id,
+      @Valid @RequestBody Carte carteDetails) throws FunctionnalProcessException {
+    	//Init du message d'erreur si l'entité n'existe pas
+        String CARTE_NOT_FOUND="Carte non trouvée avec le code : %s";
+      //Stockage de l'entité recherchée ou envoie d'un message d'erreur si n'existe pas
+        Carte carte = carteRepository
+                .findById(id)
+                .orElseThrow(()-> new FunctionnalProcessException(String.format(CARTE_NOT_FOUND,id)));
+        
+      //Changement des variables
+         carte.setPlafond(carteDetails.getPlafond());
+       //Sauvegarde de l'entité avec les changements
+         final Carte updatedCarte = carteRepository.save(carte);
+       //return de l'entité avec ses valeurs modifiées
+         return ResponseEntity.ok(updatedCarte);
+    }
+    
+    /*
      * Fonction de suppression d'une carte grâce à son id
      */
     @DeleteMapping("{id}")
     public ResponseEntity deleteCarte(@PathVariable("id") long id) {
     	// Appel à la fonction de suppression de l'entité voulu
         carteService.deleteCarte(id);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<Void>(HttpStatus.GONE);
     }
     
 }

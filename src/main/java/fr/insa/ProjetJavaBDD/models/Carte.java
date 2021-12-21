@@ -22,13 +22,13 @@ import lombok.Setter;
 @AllArgsConstructor
 
 public class Carte {
-	private int plafond;
+	private int plafond; // Plafond des dépenses d'une carte 
 	@Id
 	@Size(min=16, max=16)
-	private long numeroCarte;
+	private long numeroCarte; // Numéro d'identification de la carte sur 16 valeurs
 	@EqualsAndHashCode.Include()
-	private String motDePasse;
+	private int motDePasse; // Mot de Passe relié à la carte
 	@JsonIgnore
 	@ManyToOne 
-	private Compte compte;
+	private Compte compte; // Compte rataché à la carte d'où l'argent va être débité
 }

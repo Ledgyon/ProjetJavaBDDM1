@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import fr.insa.ProjetJavaBDD.exceptions.FunctionnalProcessException;
 import fr.insa.ProjetJavaBDD.models.Carte;
-import fr.insa.ProjetJavaBDD.models.Client;
 import fr.insa.ProjetJavaBDD.models.Compte;
 import fr.insa.ProjetJavaBDD.repositories.CarteRepository;
 import fr.insa.ProjetJavaBDD.ressouces.dto.CarteCreateModel;
@@ -43,11 +42,15 @@ public class CarteService {
 		// Stockage du compte attaché a cette carte
 		Compte compte= compteService.getCompteById(carteToCreate.getNumCompte());
 		
+		//MotDePasse hashés
+		String Password = carteToCreate.getMotDePasse();
+		int motDePasse = Password.hashCode();
+		
 		//Création de l'entité
 		Carte carte = Carte.builder()
 				.plafond(carteToCreate.getPlafond())
 				.numeroCarte(carteToCreate.getNumeroCarte())
-				.motDePasse(carteToCreate.getMotDePasse())
+				.motDePasse(motDePasse)
 				.compte(compte)
 				.build();
 		

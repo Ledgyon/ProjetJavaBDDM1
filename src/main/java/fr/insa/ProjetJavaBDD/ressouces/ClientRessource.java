@@ -2,12 +2,16 @@ package fr.insa.ProjetJavaBDD.ressouces;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +19,7 @@ import fr.insa.ProjetJavaBDD.exceptions.FunctionnalProcessException;
 import fr.insa.ProjetJavaBDD.exceptions.ModelNotValidException;
 import fr.insa.ProjetJavaBDD.models.Client;
 import fr.insa.ProjetJavaBDD.models.Compte;
+import fr.insa.ProjetJavaBDD.repositories.ClientRepository;
 import fr.insa.ProjetJavaBDD.ressouces.dto.ClientCreateModel;
 import fr.insa.ProjetJavaBDD.services.ClientService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -22,6 +27,9 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 @RestController
 @RequestMapping("clients")
 public class ClientRessource extends CommonRessource {
+	//Init de la variable de répertoire, permettant l'appel aux fonctions de cette classe
+	@Autowired
+	private ClientRepository clientRepository;
 	
 	@Autowired
 	ClientService clientService; //Init de la variable de service, permettant l'appel aux fonctions de cette classe
@@ -93,13 +101,35 @@ public class ClientRessource extends CommonRessource {
 	}
 	
 	/*
+     * Fonction de modification des informations d'un client
+     */
+	@PutMapping("{id}")
+    public ResponseEntity<Client> updateClient(@PathVariable(value = "id") int id,
+      @Valid @RequestBody Client clientDetails) throws FunctionnalProcessException {
+        //Init du message d'erreur si l'entité n'existe pas
+        String CLIENT_NOT_FOUND="Client non trouvée avec le code : %s";
+        //Stockage de l'entité recherchée ou envoie d'un message d'erreur si n'existe pas
+        Client client = clientRepository
+                .findById(id)
+                .orElseThrow(()-> new FunctionnalProcessException(String.format(CLIENT_NOT_FOUND,id)));
+        //Changement des variables
+         client.setAdresse(clientDetails.getAdresse());
+         client.setNom(clientDetails.getNom());
+         client.setTelephone(clientDetails.getTelephone());
+         //Sauvegarde de l'entité avec les changements 
+         final Client updatedClient = clientRepository.save(client);
+         //return de l'entité avec ses valeurs modifiées
+         return ResponseEntity.ok(updatedClient);
+    }
+	
+	/*
      * Fonction de suppression d'un client grâce à son id
      */
 	@DeleteMapping("{id}")
     public ResponseEntity deleteClient(@PathVariable("id") int id) {
 		// Appel à la fonction de suppression de l'entité voulu
         clientService.deleteClient(id);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<Void>(HttpStatus.GONE);
     }
 	
 }

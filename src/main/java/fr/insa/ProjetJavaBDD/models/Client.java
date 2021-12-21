@@ -27,19 +27,19 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Client {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
-	private String nom;
-	private String prenom;
-	private int age;
-	private int telephone;
-	private String adresse;
-	@ManyToOne
+	private int id; // Id auto-généré pou run client
+	private String nom; // Nom du client
+	private String prenom; //Prenom du client
+	private int age; // Age du client
+	private int telephone; // Téléphone du client
+	private String adresse; // Adresse du client
+	@ManyToOne 
 	@JsonIgnore
-	private Agence agence;
+	private Agence agence; // Agence liée au client
 	@ManyToMany
 	@JsonIgnore
 	@JoinTable(name= "client_compte",
 			joinColumns = { @JoinColumn(name="client_id")},
 			inverseJoinColumns = { @JoinColumn(name = "compte_id")})
-	private List<Compte> comptes;	
+	private List<Compte> comptes; // Liste de Compte du client
 }

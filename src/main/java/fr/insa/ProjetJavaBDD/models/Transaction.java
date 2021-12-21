@@ -26,11 +26,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Transaction {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private int id; //ID auto-généré des transactions
 	@Temporal(TemporalType.DATE)
-	private Date dateTransac;
-	private int montantTransac;
+	private Date dateTransac; // Date d'une transaction
+	private int montantTransac; // Montant d'une transaction
 	@JsonIgnore
 	@ManyToOne
-	private Compte compte;
+	private Compte compte; // Compte d'où provient la transaction
 }
