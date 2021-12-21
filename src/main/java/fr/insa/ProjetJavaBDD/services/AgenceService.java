@@ -1,5 +1,7 @@
 package fr.insa.ProjetJavaBDD.services;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,7 @@ public class AgenceService {
 	@Autowired
 	private AgenceRepository agenceRepository;
 	
-	public Agence getAgenceById(Integer Code_agence) throws FunctionnalProcessException{
+	public Agence getAgenceById(Long Code_agence) throws FunctionnalProcessException{
 		Agence agence=agenceRepository
 					.findById(Code_agence)
 					.orElseThrow(()-> new FunctionnalProcessException(String.format(AGENCE_NOT_FOUND,Code_agence)));
@@ -25,15 +27,20 @@ public class AgenceService {
 		return agence;
     } 
 	
+	@Transactional(rollbackOn = Exception.class)
 	public Agence saveAgence(AgenceCreateModel agenceToCreate)  throws FunctionnalProcessException
 	{
 		Agence agence = Agence.builder()
-				.Code_agence(agenceToCreate.getCode_agence())
-				.Adresse(agenceToCreate.getAdresse())
+				.codeAgence(agenceToCreate.getCodeAgence())
+				.adresse(agenceToCreate.getAdresse())
 				.build();
 		
 		
 		
 		return this.agenceRepository.save(agence);
 	}
+	
+	public void deleteAgence(long id) {
+        this.agenceRepository.deleteById(id);
+    }
 }

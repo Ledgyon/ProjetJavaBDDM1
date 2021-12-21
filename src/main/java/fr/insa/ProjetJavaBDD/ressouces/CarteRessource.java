@@ -1,6 +1,8 @@
 package fr.insa.ProjetJavaBDD.ressouces;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +24,7 @@ public class CarteRessource extends CommonRessource {
 	CarteService carteService;
 	
 	@GetMapping("{id}")
-    public Carte getCarte(@PathVariable("id") int id) throws Exception {
+    public Carte getCarte(@PathVariable("id") long id) throws Exception {
         return carteService.getCarteById(id);
     }
 
@@ -58,6 +60,12 @@ public class CarteRessource extends CommonRessource {
         if(!ex.getMessages().isEmpty()) {
             throw ex;
         }
+    }
+    
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteCarte(@PathVariable("id") long id) {
+        carteService.deleteCarte(id);
+        return ResponseEntity.ok().build();
     }
     
 }

@@ -3,6 +3,8 @@ package fr.insa.ProjetJavaBDD.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,16 +34,17 @@ public class ClientService {
 		return clientRepository.findAllById(Id);
     }
 	
+	@Transactional(rollbackOn = Exception.class)
 	public Client saveClient( ClientCreateModel  clientToCreate)  throws FunctionnalProcessException
 	{
 		Agence agence=agenceService.getAgenceById(clientToCreate.getAgenceId());
 		
 		Client client = Client.builder()
-				.Nom(clientToCreate.getNom())
-				.Prenom(clientToCreate.getPrenom())
-				.Telephone(clientToCreate.getTelephone())
-				.Age(clientToCreate.getAge())
-				.Adresse(clientToCreate.getAdresse())
+				.nom(clientToCreate.getNom())
+				.prenom(clientToCreate.getPrenom())
+				.telephone(clientToCreate.getTelephone())
+				.age(clientToCreate.getAge())
+				.adresse(clientToCreate.getAdresse())
 				.agence(agence)
 				.build();
 		
@@ -49,4 +52,8 @@ public class ClientService {
 		
 		return this.clientRepository.save(client);
 	}
+	
+	public void deleteClient(int id) {
+        this.clientRepository.deleteById(id);
+    }
 }

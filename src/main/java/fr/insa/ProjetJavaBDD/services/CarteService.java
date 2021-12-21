@@ -1,5 +1,7 @@
 package fr.insa.ProjetJavaBDD.services;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,24 +20,29 @@ public class CarteService {
 	
 	private static final String CARTE_NOT_FOUND="Carte non trouvée avec l'id : %s";
 
-	public Carte getCarteById(Integer Id) throws FunctionnalProcessException{
+	public Carte getCarteById(Long Id) throws FunctionnalProcessException{
 		Carte carte=carteRepository
 					.findById(Id)
 					.orElseThrow(()-> new FunctionnalProcessException(String.format(CARTE_NOT_FOUND,Id)));
         return carte;
     }
 	
+	@Transactional(rollbackOn = Exception.class)
 	public Carte saveCarte( CarteCreateModel  carteToCreate)  throws FunctionnalProcessException
 	{
 		Compte compte= compteService.getCompteById(carteToCreate.getNumCompte());
 		
 		Carte carte = Carte.builder()
-				.Plafond(carteToCreate.getPlafond())
-				.NumeroCarte(carteToCreate.getNumeroCarte())
-				.MotDePasse(carteToCreate.getMotDePasse())
+				.plafond(carteToCreate.getPlafond())
+				.numeroCarte(carteToCreate.getNumeroCarte())
+				.motDePasse(carteToCreate.getMotDePasse())
 				.compte(compte)
 				.build();
 		
 		return this.carteRepository.save(carte);
 	}
+	
+	public void deleteCarte(long id) {
+        this.carteRepository.deleteById(id);
+    }
 }

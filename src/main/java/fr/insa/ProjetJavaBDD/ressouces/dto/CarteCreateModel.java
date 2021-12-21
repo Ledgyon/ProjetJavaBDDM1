@@ -8,8 +8,8 @@ import lombok.Setter;
 @Setter
 
 public class CarteCreateModel implements Serializable {
-	private int Plafond;
-	private int NumeroCarte;
-	private String MotDePasse;
-	private int NumCompte;
+	private int plafond;
+	private long numeroCarte;
+	private String motDePasse;
+	private long numCompte;
 }

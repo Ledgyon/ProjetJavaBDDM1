@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import fr.insa.ProjetJavaBDD.models.Carte;
 
 @Repository
-public interface CarteRepository extends JpaRepository<Carte, Integer> {
+public interface CarteRepository extends JpaRepository<Carte, Long> {
     //public List<Carte> findByPlafond(Integer Plafond);
 }

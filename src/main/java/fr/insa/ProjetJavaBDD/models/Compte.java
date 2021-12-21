@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,17 +24,21 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Compte {
-	private int Solde;
+	private int solde;
 	@Id
 	@Size(min=11, max=11)
-	private long num_Compte;
-	private String IBAN;
+	private long numCompte;
+	private String iban;
+	@JsonIgnore
 	@ManyToMany(mappedBy="comptes")
 	private List<Client> clients;
+	@JsonIgnore
 	@OneToMany(mappedBy="compte")
 	private List<Carte> cartes;
+	@JsonIgnore
 	@OneToMany(mappedBy="compte")
 	private List<Transaction> transactions;
+	@JsonIgnore
 	@ManyToOne
 	private Agence agence;
 	public Compte(Agence agence) {

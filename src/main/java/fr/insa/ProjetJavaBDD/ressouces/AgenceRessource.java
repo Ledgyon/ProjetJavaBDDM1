@@ -1,6 +1,8 @@
 package fr.insa.ProjetJavaBDD.ressouces;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +24,11 @@ public class AgenceRessource extends CommonRessource {
 	AgenceService agenceService;
 	
 	@GetMapping("{id}")
-    public AgenceReponseModel getAgence(@PathVariable("id") int id) throws Exception {
+    public AgenceReponseModel getAgence(@PathVariable("id") long id) throws Exception {
 		Agence agence = agenceService.getAgenceById(id);
 		AgenceReponseModel response= AgenceReponseModel.builder()
-			.Code_agence(agence.getCode_agence())
-			.Adresse(agence.getAdresse())
+			.codeAgence(agence.getCodeAgence())
+			.adresse(agence.getAdresse())
 			.build();
 		return response;
     }
@@ -44,7 +46,7 @@ public class AgenceRessource extends CommonRessource {
             ex.getMessages().add("AgenceCreateModel : null");
         }
 
-        if(agenceToCreate.getCode_agence() == 0 ) {
+        if(agenceToCreate.getCodeAgence() == 0 ) {
             ex.getMessages().add("Code_agence est vide");
         }
         
@@ -55,5 +57,11 @@ public class AgenceRessource extends CommonRessource {
         if(!ex.getMessages().isEmpty()) {
             throw ex;
         }
+    }
+    
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteAgence(@PathVariable("id") long id) {
+        agenceService.deleteAgence(id);
+        return ResponseEntity.ok().build();
     }
 }

@@ -1,6 +1,9 @@
 package fr.insa.ProjetJavaBDD.ressouces;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,5 +41,11 @@ public class TransactionRessource extends CommonRessource {
         if(!ex.getMessages().isEmpty()) {
             throw ex;
         }
+    }
+    
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteTransaction(@PathVariable("id") int id) {
+        transactionService.deleteTransaction(id);
+        return ResponseEntity.ok().build();
     }
 }

@@ -14,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AgenceReponseModel {
 
-	private int Code_agence;
-	private String Adresse;	
+	private long codeAgence;
+	private String adresse;	
 	
 }

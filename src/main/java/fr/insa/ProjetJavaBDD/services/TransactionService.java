@@ -3,6 +3,8 @@ package fr.insa.ProjetJavaBDD.services;
 import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +25,10 @@ public class TransactionService {
         return this.transactionRepository.findByMontantTransacOrderByDateTransac(montantTransac);
     } 
 	
+	@Transactional(rollbackOn = Exception.class)
 	public Transaction saveTransaction(TransactionCreateModel transactionToCreate)  throws FunctionnalProcessException
 	{
-		Compte compte=compteService.getCompteById(transactionToCreate.getNum_Compte());
+		Compte compte=compteService.getCompteById(transactionToCreate.getNumCompte());
 		
 		Transaction transaction = Transaction.builder()
 				.dateTransac(new Date())
@@ -37,4 +40,8 @@ public class TransactionService {
 		
 		return this.transactionRepository.save(transaction);
 	}
+	
+	public void deleteTransaction(int id) {
+        this.transactionRepository.deleteById(id);
+    }
 }

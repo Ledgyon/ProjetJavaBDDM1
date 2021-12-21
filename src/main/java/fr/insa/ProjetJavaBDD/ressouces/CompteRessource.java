@@ -3,6 +3,8 @@ package fr.insa.ProjetJavaBDD.ressouces;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +27,7 @@ public class CompteRessource extends CommonRessource {
     CompteService compteService;
 	
 	@GetMapping("{id}")
-    public Compte getCompte(@PathVariable("id") int id) throws Exception {
+    public Compte getCompte(@PathVariable("id") long id) throws Exception {
         return compteService.getCompteById(id);
     }
 	
@@ -42,7 +44,7 @@ public class CompteRessource extends CommonRessource {
             ex.getMessages().add("TransactionCreateModel : null");
         }
         
-        if(compteToCreate.getNum_Compte() == 0) {
+        if(compteToCreate.getNumCompte() == 0) {
             ex.getMessages().add("Num_Compte : null");
         }
 
@@ -54,10 +56,9 @@ public class CompteRessource extends CommonRessource {
             ex.getMessages().add("Code Agence est vide");
         }
         
-        if(compteToCreate.getIDclient() == null ) {
+        if(compteToCreate.getIdClient() == null ) {
             ex.getMessages().add("ID client est vide");
-        }
-        
+        }        
         
         if(!ex.getMessages().isEmpty()) {
             throw ex;
@@ -66,9 +67,14 @@ public class CompteRessource extends CommonRessource {
 	
 	
 	@GetMapping("{id}/transactions")
-    public List<Transaction> getTransactions(@PathVariable("id") int id) throws Exception {
+    public List<Transaction> getTransactions(@PathVariable("id") long id) throws Exception {
         return compteService.getCompteById(id).getTransactions();
     }
 	
+	@DeleteMapping("{id}")
+    public ResponseEntity deleteCompte(@PathVariable("id") long id) {
+        compteService.deleteCompte(id);
+        return ResponseEntity.ok().build();
+    }
 	
 }

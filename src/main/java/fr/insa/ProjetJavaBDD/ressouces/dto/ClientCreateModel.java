@@ -8,10 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ClientCreateModel implements Serializable{
-	private String Nom;
-	private String Prenom;
-	private int Age;
-	private int Telephone;
-	private String Adresse;
-	private int agenceId;
+	private String nom;
+	private String prenom;
+	private int age;
+	private int telephone;
+	private String adresse;
+	private long agenceId;
 }

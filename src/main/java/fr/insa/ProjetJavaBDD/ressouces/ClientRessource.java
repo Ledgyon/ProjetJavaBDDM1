@@ -3,6 +3,8 @@ package fr.insa.ProjetJavaBDD.ressouces;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +33,11 @@ public class ClientRessource extends CommonRessource {
 	
 	@GetMapping("{id}")
 	public Client getClient(@PathVariable("id") int id) throws Exception {
-	    return clientService.getClientById(id);
+		Client client = clientService.getClientById(id);
+		/*ClientReponseModel response = new ClientReponseModel();
+		response.setAdresse(agence.getAdresse());
+		response.setCode_agence(agence.getCode_agence());*/
+        return client;
 	}
 
 	@PostMapping
@@ -75,5 +81,11 @@ public class ClientRessource extends CommonRessource {
 	        throw ex;
 	    }
 	}
+	
+	@DeleteMapping("{id}")
+    public ResponseEntity deleteClient(@PathVariable("id") int id) {
+        clientService.deleteClient(id);
+        return ResponseEntity.ok().build();
+    }
 	
 }

@@ -11,9 +11,9 @@ import lombok.Setter;
 @Setter
 public class CompteCreateModel implements Serializable{
 
-	private int agenceCode;
-	private List<Integer> IDclient;
-	private int num_Compte;
+	private long agenceCode;
+	private List<Integer> idClient;
+	private long numCompte;
 	private int solde;
 
 }

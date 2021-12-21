@@ -11,6 +11,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,15 +27,17 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Client {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private int ID;
-	private String Nom;
-	private String Prenom;
-	private int Age;
-	private int Telephone;
-	private String Adresse;
+	private int id;
+	private String nom;
+	private String prenom;
+	private int age;
+	private int telephone;
+	private String adresse;
 	@ManyToOne
+	@JsonIgnore
 	private Agence agence;
 	@ManyToMany
+	@JsonIgnore
 	@JoinTable(name= "client_compte",
 			joinColumns = { @JoinColumn(name="client_id")},
 			inverseJoinColumns = { @JoinColumn(name = "compte_id")})
