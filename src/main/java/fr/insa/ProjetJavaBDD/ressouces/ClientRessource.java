@@ -24,8 +24,11 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 public class ClientRessource extends CommonRessource {
 	
 	@Autowired
-	ClientService clientService;
+	ClientService clientService; //Init de la variable de service, permettant l'appel aux fonctions de cette classe
 	
+	/*
+	 * Fonction pour recuperer un client grâce à son id 
+	 */
 	@GetMapping("{id}/comptes")
     public List<Compte> getComptes(@PathVariable("id") int id) throws Exception {
         return clientService.getClientById(id).getComptes();
@@ -42,17 +45,23 @@ public class ClientRessource extends CommonRessource {
 
 	@PostMapping
 	public Client createClient(@RequestBody ClientCreateModel clientToCreate) throws FunctionnalProcessException {
+		// Appel à la fonction de verification d'initialisation des variables d'entrée
 	    validateClientModel(clientToCreate);
-	    return this.clientService.saveClient(clientToCreate);
+	    return this.clientService.saveClient(clientToCreate); //Return et appel à la fonction de sauvegarde de l'entité
 	}
 
+	/*
+     * Fonction de verification d'initialisation des variables d'entrée pour un client
+     */
 	private void validateClientModel(ClientCreateModel clientToCreate) throws ModelNotValidException {
 	    ModelNotValidException ex = new ModelNotValidException();
 
+	 // Verification Init du model
 	    if(clientToCreate == null) {
 	        ex.getMessages().add("ClientCreateModel : null");
 	    }
 
+	 // Serie de boucle if envoyant un message d'erreur si l'attribut est null ou égale à 0
 	    if(clientToCreate.getAge() == 0 ) {
 	        ex.getMessages().add("Age est vide");
 	    }
@@ -77,13 +86,18 @@ public class ClientRessource extends CommonRessource {
 	        ex.getMessages().add("Agence_id est vide");
 	    }
 	    
+	  //Envoie les messages d'erreurs s'il y en a 
 	    if(!ex.getMessages().isEmpty()) {
 	        throw ex;
 	    }
 	}
 	
+	/*
+     * Fonction de suppression d'un client grâce à son id
+     */
 	@DeleteMapping("{id}")
     public ResponseEntity deleteClient(@PathVariable("id") int id) {
+		// Appel à la fonction de suppression de l'entité voulu
         clientService.deleteClient(id);
         return ResponseEntity.ok().build();
     }
