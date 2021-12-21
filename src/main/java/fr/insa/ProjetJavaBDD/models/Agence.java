@@ -25,12 +25,12 @@ import lombok.Setter;
 public class Agence {
 	@Id
 	@Size(min=5, max=5)
-	private long codeAgence;
-	private String adresse;
+	private long codeAgence; // Code de l'agence sur 5 Valeurs
+	private String adresse; // Adresse de l'agence
 	@JsonIgnore
 	@OneToMany(mappedBy="agence")
-	private List<Client> listeClient;
+	private List<Client> listeClient; // Liste de Clients dont l'agence est composée
 	@JsonIgnore
 	@OneToMany(mappedBy="agence")
-	private List<Compte> listeCompte;
+	private List<Compte> listeCompte; // Liste de Comptes que l'agence fournie aux clients
 }
