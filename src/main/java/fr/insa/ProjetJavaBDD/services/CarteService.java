@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.insa.ProjetJavaBDD.exceptions.FunctionnalProcessException;
+import fr.insa.ProjetJavaBDD.exceptions.ModelNotValidException;
 import fr.insa.ProjetJavaBDD.models.Carte;
 import fr.insa.ProjetJavaBDD.models.Compte;
 import fr.insa.ProjetJavaBDD.repositories.CarteRepository;
@@ -18,6 +19,7 @@ public class CarteService {
 	private CarteRepository carteRepository;
 	
 	//Init de la variable de service
+	@Autowired
 	private CompteService compteService;
 	
 	//Init du message d'erreur si l'netité n'existe pas
@@ -37,24 +39,34 @@ public class CarteService {
 	 * Fonction de sauvegarde d'une carte
 	 */
 	@Transactional(rollbackOn = Exception.class)
-	public Carte saveCarte( CarteCreateModel  carteToCreate)  throws FunctionnalProcessException
+	public Carte saveCarte( CarteCreateModel  carteToCreate)  throws FunctionnalProcessException,ModelNotValidException
 	{
 		// Stockage du compte attaché a cette carte
 		Compte compte= compteService.getCompteById(carteToCreate.getNumCompte());
 		
-		//MotDePasse hashés
-		String Password = carteToCreate.getMotDePasse();
-		int motDePasse = Password.hashCode();
-		
-		//Création de l'entité
-		Carte carte = Carte.builder()
-				.plafond(carteToCreate.getPlafond())
-				.numeroCarte(carteToCreate.getNumeroCarte())
-				.motDePasse(motDePasse)
-				.compte(compte)
-				.build();
-		
-		return this.carteRepository.save(carte); //sauvegarde
+		// Vérification du nombre de carte d'un compte (ne pouvant posséder plus de 2 cartes)
+		if(compte.getCartes().size() < 2) 
+		{
+			//MotDePasse hashés
+			String Password = carteToCreate.getMotDePasse();
+			int motDePasse = Password.hashCode();
+			
+			//Création de l'entité
+			Carte carte = Carte.builder()
+					.plafond(carteToCreate.getPlafond())
+					.numeroCarte(carteToCreate.getNumeroCarte())
+					.motDePasse(motDePasse)
+					.compte(compte)
+					.build();
+			
+			return this.carteRepository.save(carte); //sauvegarde
+		}
+		else  // Message d'erreur
+        {
+        	ModelNotValidException ex = new ModelNotValidException();
+        	ex.getMessages().add("Le compte possède le maximum de carte possible, impossible d'en créer une pour celui-ci.");
+        	throw ex;
+        }
 	}
 	
 	/*

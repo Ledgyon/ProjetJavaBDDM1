@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,6 @@ import fr.insa.ProjetJavaBDD.models.Compte;
 import fr.insa.ProjetJavaBDD.repositories.ClientRepository;
 import fr.insa.ProjetJavaBDD.ressouces.dto.ClientCreateModel;
 import fr.insa.ProjetJavaBDD.services.ClientService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("clients")
@@ -35,19 +35,19 @@ public class ClientRessource extends CommonRessource {
 	ClientService clientService; //Init de la variable de service, permettant l'appel aux fonctions de cette classe
 	
 	/*
-	 * Fonction pour recuperer un client grâce à son id 
+	 * Fonction pour recuperer les comptes d'un client grâce à son id 
 	 */
 	@GetMapping("{id}/comptes")
     public List<Compte> getComptes(@PathVariable("id") int id) throws Exception {
         return clientService.getClientById(id).getComptes();
     }
 	
+	/*
+	 * Fonction pour recuperer un client grâce à son id 
+	 */
 	@GetMapping("{id}")
 	public Client getClient(@PathVariable("id") int id) throws Exception {
 		Client client = clientService.getClientById(id);
-		/*ClientReponseModel response = new ClientReponseModel();
-		response.setAdresse(agence.getAdresse());
-		response.setCode_agence(agence.getCode_agence());*/
         return client;
 	}
 
@@ -77,6 +77,10 @@ public class ClientRessource extends CommonRessource {
 	    if(clientToCreate.getTelephone() == 0 ) {
 	        ex.getMessages().add("Telephone est vide");
 	    }
+	    
+	    if(clientToCreate.getAgenceId() == 0 ) {
+	        ex.getMessages().add("Agence_id est vide");
+	    }
 
 	    if(clientToCreate.getNom() == null || clientToCreate.getNom().isBlank()) {
 	        ex.getMessages().add("Nom est vide");
@@ -89,10 +93,6 @@ public class ClientRessource extends CommonRessource {
 	    if(clientToCreate.getAdresse() == null || clientToCreate.getAdresse().isBlank()) {
 	        ex.getMessages().add("Adresse est vide");
 	    }    
-	    
-	    if(clientToCreate.getAgenceId() == 0 ) {
-	        ex.getMessages().add("Agence_id est vide");
-	    }
 	    
 	  //Envoie les messages d'erreurs s'il y en a 
 	    if(!ex.getMessages().isEmpty()) {

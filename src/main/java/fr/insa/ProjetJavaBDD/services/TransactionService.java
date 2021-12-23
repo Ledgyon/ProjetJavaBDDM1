@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.insa.ProjetJavaBDD.exceptions.FunctionnalProcessException;
+import fr.insa.ProjetJavaBDD.exceptions.ModelNotValidException;
 import fr.insa.ProjetJavaBDD.models.Compte;
 import fr.insa.ProjetJavaBDD.models.Transaction;
 import fr.insa.ProjetJavaBDD.repositories.TransactionRepository;
@@ -21,6 +22,7 @@ public class TransactionService {
 	private TransactionRepository transactionRepository;
 	
 	//Init de la variable de service
+	@Autowired
 	private CompteService compteService; 
 	
 	/*
@@ -34,19 +36,37 @@ public class TransactionService {
 	 * Fonction de sauvegarde d'une transaction
 	 */
 	@Transactional(rollbackOn = Exception.class)
-	public Transaction saveTransaction(TransactionCreateModel transactionToCreate)  throws FunctionnalProcessException
+	public Transaction saveTransaction(TransactionCreateModel transactionToCreate)  throws FunctionnalProcessException,ModelNotValidException
 	{
-		// Stockage du compte attaché a cette transaction
-		Compte compte=compteService.getCompteById(transactionToCreate.getNumCompte());
 		
-		//Builder de la transaction
-		Transaction transaction = Transaction.builder()
-				.dateTransac(new Date())
-				.montantTransac(transactionToCreate.getMontantTransac())
-				.compte(compte)
-				.build();
-		
-		return this.transactionRepository.save(transaction); // sauvegarder
+		// Stockage du compte bénéficiaire et emetteur attaché a cette transaction
+		Compte compteBenef=compteService.getCompteById(transactionToCreate.getNumCompteB());
+        Compte compteEmetteur=compteService.getCompteById(transactionToCreate.getNumCompteE());
+        
+        // IMPORTANT : on part du postulat que les comptes ne peuvent pas avoir de découvert
+        if(compteEmetteur.getSolde()-transactionToCreate.getMontantTransac() >= 0)
+        {
+        	// Mise a jour des soldes concernés
+            compteBenef.setSolde(compteBenef.getSolde()+transactionToCreate.getMontantTransac());
+            compteEmetteur.setSolde(compteEmetteur.getSolde()-transactionToCreate.getMontantTransac());
+            
+            //Builder de la transaction
+            Transaction transaction = Transaction.builder()
+                    .dateTransac(new Date())
+                    .montantTransac(transactionToCreate.getMontantTransac())
+                    .compteBenef(compteBenef)
+                    .compteEmetteur(compteEmetteur)
+                    .build();
+    		
+    		return this.transactionRepository.save(transaction); // sauvegarder
+        }
+        else  // Message d'erreur
+        {
+        	ModelNotValidException ex = new ModelNotValidException();
+        	ex.getMessages().add("Le solde du compte emetteur ne permet pas cette transaction");
+        	throw ex;
+        }
+        
 	}
 	
 	/*

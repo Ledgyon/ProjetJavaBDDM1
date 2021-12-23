@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,11 +27,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Transaction {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@NotNull
 	private int id; //ID auto-généré des transactions
 	@Temporal(TemporalType.DATE)
 	private Date dateTransac; // Date d'une transaction
 	private int montantTransac; // Montant d'une transaction
 	@JsonIgnore
-	@ManyToOne
-	private Compte compte; // Compte d'où provient la transaction
+    @ManyToOne
+    private Compte compteBenef; // Compte vers où va la transaction
+    @JsonIgnore
+    @ManyToOne
+    private Compte compteEmetteur; // Compte d'où provient la transaction
 }

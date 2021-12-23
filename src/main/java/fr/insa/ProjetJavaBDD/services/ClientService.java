@@ -21,6 +21,7 @@ public class ClientService {
 	private ClientRepository clientRepository;
 	
 	//Init de la variable de service
+	@Autowired
 	private AgenceService agenceService;
 	
 	//Init du message d'erreur si l'netité n'existe pas
@@ -55,6 +56,7 @@ public class ClientService {
 		
 		//Création de l'entité
 		Client client = Client.builder()
+				.id(1)
 				.nom(clientToCreate.getNom())
 				.prenom(clientToCreate.getPrenom())
 				.telephone(clientToCreate.getTelephone())

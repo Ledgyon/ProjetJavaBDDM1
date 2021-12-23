@@ -48,6 +48,14 @@ public class TransactionRessource extends CommonRessource {
             ex.getMessages().add("MontantTransac est vide");
         }
         
+        if(transactionToCreate.getNumCompteB() == 0 ) {
+            ex.getMessages().add("getNumCompteB est vide");
+        }
+        
+        if(transactionToCreate.getNumCompteE() == 0 ) {
+            ex.getMessages().add("getNumCompteE est vide");
+        }
+        
       //Envoie les messages d'erreurs s'il y en a 
         if(!ex.getMessages().isEmpty()) {
             throw ex;

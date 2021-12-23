@@ -9,6 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AgenceCreateModel implements Serializable{
-	private int codeAgence;
+	private long codeAgence;
 	private String adresse;
 }

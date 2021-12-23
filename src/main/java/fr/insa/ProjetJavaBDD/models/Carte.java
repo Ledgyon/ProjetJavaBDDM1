@@ -3,7 +3,10 @@ package fr.insa.ProjetJavaBDD.models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Range;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -24,7 +27,8 @@ import lombok.Setter;
 public class Carte {
 	private int plafond; // Plafond des dépenses d'une carte 
 	@Id
-	@Size(min=16, max=16)
+	@Digits(integer=16,fraction=0)
+	@NotNull
 	private long numeroCarte; // Numéro d'identification de la carte sur 16 valeurs
 	@EqualsAndHashCode.Include()
 	private int motDePasse; // Mot de Passe relié à la carte

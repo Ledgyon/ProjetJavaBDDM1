@@ -13,5 +13,6 @@ import lombok.Setter;
 public class TransactionCreateModel implements Serializable{
 
 	private int montantTransac;
-	private long numCompte;
+	private long numCompteB; 
+    private long numCompteE;
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.insa.ProjetJavaBDD.exceptions.FunctionnalProcessException;
 import fr.insa.ProjetJavaBDD.exceptions.ModelNotValidException;
 import fr.insa.ProjetJavaBDD.models.Carte;
+import fr.insa.ProjetJavaBDD.models.Client;
 import fr.insa.ProjetJavaBDD.models.Compte;
 import fr.insa.ProjetJavaBDD.models.Transaction;
 import fr.insa.ProjetJavaBDD.ressouces.dto.CompteCreateModel;
@@ -94,6 +95,14 @@ public class CompteRessource extends CommonRessource {
 	@GetMapping("{id}/cartes")
     public List<Carte> getCartes(@PathVariable("id") long id) throws Exception {
         return compteService.getCompteById(id).getCartes();
+    }
+	
+	/*
+	 * Fonction de récupération de tous les clients d'un compte
+	 */
+	@GetMapping("{id}/clients")
+    public List<Client> getClients(@PathVariable("id") long id) throws Exception {
+        return compteService.getCompteById(id).getClients();
     }
 	
 	/*

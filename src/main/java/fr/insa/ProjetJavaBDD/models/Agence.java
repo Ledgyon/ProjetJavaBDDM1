@@ -5,7 +5,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -24,7 +25,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Agence {
 	@Id
-	@Size(min=5, max=5)
+	@Digits(integer=5,fraction=0)
+	@NotNull
 	private long codeAgence; // Code de l'agence sur 5 valeurs numériques
 	private String adresse; // Adresse de l'agence
 	@JsonIgnore

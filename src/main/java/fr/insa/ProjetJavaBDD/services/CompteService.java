@@ -23,7 +23,9 @@ public class CompteService {
 	private CompteRepository compteRepository;
 	
 	//Init des variables de service
+	@Autowired
 	private AgenceService agenceService;
+	@Autowired
 	private ClientService clientService;
 	
 	//Init du message d'erreur si l'netité n'existe pas
@@ -51,7 +53,7 @@ public class CompteService {
 		//Création de l'entité
 		Compte compte = Compte.builder()
 				.solde(compteToCreate.getSolde())
-				.numCompte(num_Compte)
+				.numCompte(compteToCreate.getNumCompte())
 				.iban(iban)
 				.agence(agence)
 				.clients(client)
