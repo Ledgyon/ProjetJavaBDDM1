@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -33,7 +35,10 @@ public class Compte {
 	private long numCompte; // ID d'un compte sur 11 valeurs
 	private String iban; // IBAN du compte
 	
-	@ManyToMany(mappedBy="comptes")
+	@ManyToMany
+	@JoinTable(name= "compte_client",
+	joinColumns = { @JoinColumn(name="compte_numCompte")},
+	inverseJoinColumns = { @JoinColumn(name = "client_id")})
 	private List<Client> clients; // Liste des Clients Propriétaires
 	
 	@OneToMany(mappedBy="compte")

@@ -41,9 +41,6 @@ public class Client {
 	@ManyToOne 
 	private Agence agence; // Agence liée au client
 	@JsonIgnore
-	@ManyToMany
-	@JoinTable(name= "client_compte",
-			joinColumns = { @JoinColumn(name="clients_id")},
-			inverseJoinColumns = { @JoinColumn(name = "comptes_numCompte")})
+	@ManyToMany(mappedBy="clients")
 	private List<Compte> comptes; // Liste de Compte du client
 }
