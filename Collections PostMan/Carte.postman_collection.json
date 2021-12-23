@@ -1,0 +1,156 @@
+{
+	"info": {
+		"_postman_id": "f6b15029-3a06-476d-8b4b-7a3ef518d824",
+		"name": "Carte",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post Carte",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"motDePasse\": \"mdpincroyable\",\r\n  \"numeroCarte\": 7548632915468523,\r\n  \"plafond\": 1000,\r\n  \"numCompte\" : 91546325567\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/cartes",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cartes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Carte2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"motDePasse\": \"bestmdp\",\r\n  \"numeroCarte\": 6134567154623591,\r\n  \"plafond\": 1000,\r\n  \"numCompte\" : 19482346527\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/cartes",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cartes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Carte3 (pour vérif max carte)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"motDePasse\": \"motdepasse789\",\r\n  \"numCompte\": 19482346527,\r\n  \"numeroCarte\": 3234567896842315,\r\n  \"plafond\": 2000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/cartes",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cartes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Carte By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/cartes/7548632915468523",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cartes",
+						"7548632915468523"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Carte",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/cartes/7548632915468523",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cartes",
+						"7548632915468523"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Carte",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"plafond\": 9999\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/cartes/7548632915468523",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cartes",
+						"7548632915468523"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

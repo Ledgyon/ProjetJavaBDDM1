@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "2645542a-32c1-4a2d-8b36-f7814919069a",
+		"name": "Agence",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post Agence",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"adresse\": \"80 rue de la Paix\",\r\n  \"codeAgence\": 66666\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/agences",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"agences"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Agence By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/agences/66666",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"agences",
+						"66666"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Agence",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/agences/66666",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"agences",
+						"66666"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Agence",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"adresse\": \"2 rue des tests\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/agences/66666",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"agences",
+						"66666"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
